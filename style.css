@@ -1,0 +1,21 @@
+#gameboard {
+    padding: 20px;
+    display: grid;
+    height: 300px;
+    width: 300px;
+    grid-template: repeat(3, 1fr)/repeat(3, 1fr);
+    justify-items: center;
+    background: lightpink;
+    border-radius: 10px;
+}
+
+.spot {
+    display: block;
+    height: 100%;
+    width: 100%;
+    border: 1px solid black;
+    cursor: pointer;
+    background-size: 80%;
+    background-position: 50%;
+    background: white;
+}
