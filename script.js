@@ -8,7 +8,7 @@ const spot = () => {
     };
 };
 
-// tic-tac-toe grid
+// module for tic-tac-toe grid
 const gameboard = (() => {
     const board = [];
     
@@ -21,25 +21,36 @@ const gameboard = (() => {
         };
         // board = getBoard();
         // console.log(board);
+        index = 0;
         board.forEach(spot => {
             const square = document.createElement('div');
             square.classList.add("spot");
+            square.setAttribute('data-index', `${index}`);
             DOMboard.appendChild(square);
-            square.addEventListener('click', controller.playTurn);
+            square.addEventListener('click', (e) =>
+            {
+                controller.playTurn(e);
+                // console.log(e);
+                // console.log(e.target);
+                // console.log(e.target.dataset.index);
+                // console.log(board[e.target.dataset.index].mark);
+                // console.log(this);
+            });
+            index++;
             // square.addEventListener('click', (e) => {
             //     controller.playTurn();
             // });
         });
     };
 
-    // gameboard's functions that will be accessible outside of gameboard
+    // gameboard's functions that will be accessible outside of module
     return {
         getBoard,
         renderBoard
     };
 })();
 
-// controller that oversees the entire game
+// module for controller that oversees the entire game
 const controller = (() => {
 
     const player1Turn = true;
@@ -49,16 +60,21 @@ const controller = (() => {
     }
 
     // play a turn
-    const playTurn = () => {
-        console.log("click");
-        console.log("this: " + this);
-        mark = this.children;
+    const playTurn = (e) => {
+        spotIndex = e.target.dataset.index;
+        DOMspot = e.target;
+        spotElem = gameboard.getBoard()[spotIndex];
+        mark = spotElem.mark;
         console.log("trtying to get the thing: " + mark);
-        if (player1Turn && this.mark == '') { // player 1's turn - 'X'
-        this.setAttribute('style', 'background: url(images/x-mark.png) no-repeat; background-size: 100%;');
-    }
-        else if (this.mark == ''){ // player 2's turn - 'O'
-            this.setAttribute('style', 'background: url(images/o-mark.png) no-repeat; background-size: 100%;');
+        if (player1Turn && mark == '') { // player 1's turn - 'X'
+            DOMspot.setAttribute('style', 'background: url(images/x-mark.png) no-repeat; background-size: 100%;');
+            spotElem.mark = "x";
+            console.log("did this update?" + spotElem.mark);
+            console.log("what about this: " + gameboard.getBoard()[spotIndex].mark);
+        }
+        else if (mark == ''){ // player 2's turn - 'O'
+            DOMspot.setAttribute('style', 'background: url(images/o-mark.png) no-repeat; background-size: 100%;');
+            mark = "o";
         }
     };
 
@@ -66,6 +82,7 @@ const controller = (() => {
         console.log('uhhhh');
     };
 
+    // controller's functions accessible outside of module
     return {
         //renderBoard,
         playTurn,
