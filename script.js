@@ -58,7 +58,7 @@ const controller = (() => {
             DOMboard.removeChild(child);
         });
         DOMplayer.textContent = "Player 1's Turn";
-        DOMscorekeeper.textContent = `Player 1: ${player1Wins} --- Player 2: ${player2Wins}`;
+        DOMscorekeeper.innerHTML = `<u>SCORE</u><br>Player 1: ${player1Wins} <br> Player 2: ${player2Wins}`;
         gameboard.renderBoard();
     }
 
@@ -69,12 +69,13 @@ const controller = (() => {
         spotIndex = e.target.dataset.index; // index of DOM spot
         DOMspot = e.target;
         spot = gameboard.getBoard()[spotIndex]; // index of internal spot object
-        markSpot(spot);
+        turnSuccessful = markSpot(spot);
 
+        // game over
         result = checkResult();
-
         if (result != ''){
             setTimeout(function() { // allow to render final mark
+                // win
                 if (result == 'win') {
                     if (player1Turn) {
                         player1Wins++;
@@ -89,6 +90,7 @@ const controller = (() => {
                         }
                     }
                 }
+                // tie
                 else {
                     if (confirm(`It's a Tie! Would you like to play again?`)) {
                         startNewGame();
@@ -97,7 +99,8 @@ const controller = (() => {
             }, 10);
         }
         
-        else {
+        // game not over, next player
+        else if (turnSuccessful) {
             player1Turn = !player1Turn;
             if (player1Turn) {
                 DOMplayer.textContent = "Player 1's Turn";
@@ -126,9 +129,14 @@ const controller = (() => {
                 spot.mark = "o";
                 console.log("marking o");
             }
+            // successful turn
+            return true;
         }
+        // unsuccessful turn -- clicked an already marked square
+        return false;
     };
 
+    // check if the game is over
     const checkResult = () => {
         board = gameboard.getBoard();
         console.log(board);
@@ -157,6 +165,7 @@ const controller = (() => {
         return '';
     };
 
+    // check if there is a three-in-a-row
     const checkWin = (board) => {
         
         const winConditions = [
@@ -171,7 +180,6 @@ const controller = (() => {
         ];
 
         isWin = false;
-
         winConditions.forEach((row) => {
             if (threeInARow(board, row)) {
                 isWin = true;
@@ -181,11 +189,13 @@ const controller = (() => {
         return isWin;
     };
 
+    // return if row is a winning row
     const threeInARow = (board, row) => {
         return (board[row[0]].mark != '' && board[row[0]].mark == board[row[1]].mark
             && board[row[0]].mark == board[row[2]].mark);
     }
 
+    // check if board is full
     const boardFull = (board) => {
         isFull = true;
         board.forEach(spot => {

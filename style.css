@@ -1,16 +1,36 @@
+@font-face {
+    font-family: title-font;
+    src: url(fonts/Stay\ and\ Shine.ttf);
+}
+
+@font-face {
+    font-family: scoreboard-font;
+    src: url(fonts/STAY\ HOME.otf);
+}
+
+header {
+    text-align: center;
+    font-family: title-font;
+    font-size: 30px;
+}
+
+#container {
+    display: flex;
+}
+
 #gameboard {
-    padding: 20px;
+    padding: 1vw;
     display: grid;
-    height: 300px;
-    width: 300px;
+    height: 30vw;
+    width: 30vw;
+    margin-left: 20vw;
     grid-template: repeat(3, 1fr)/repeat(3, 1fr);
-    justify-items: center;
     background: lightpink;
     border-radius: 10px;
 }
 
 .spot {
-    display: block;
+    /* display: block; */
     height: 100%;
     width: 100%;
     border: 1px solid black;
@@ -18,4 +38,19 @@
     background-size: 80%;
     background-position: 50%;
     background: white;
+}
+
+#game-info {
+    display: block;
+    width: 25vw;
+    padding: 20px;
+    font-family: scoreboard-font;
+    font-weight: 700;
+    font-size: 30px;
+    margin-left: 5vw;
+}
+
+#player-board {
+    display: block;
+    margin-bottom: 40px;
 }
